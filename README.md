@@ -1,15 +1,8 @@
-# Adonis fullstack application
+# Testing AdonisJs
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+## App -> ToDo list
 
-1. Bodyparser
-2. Session
-3. Authentication
-4. Web security middleware
-5. CORS
-6. Edge template engine
-7. Lucid ORM
-8. Migrations and seeds
+Simple ToDo list
 
 ## Setup
 
@@ -21,6 +14,11 @@ adonis new yardstick
 
 or manually clone the repo and then run `npm install`.
 
+
+### Database
+```bash
+$ docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
 
 ### Migrations
 
