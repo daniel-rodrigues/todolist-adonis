@@ -18,10 +18,14 @@ adonis new yardstick
 or manually clone the repo and then run `npm install`.
 
 
-### Database
+### Server UP
 ```bash
 $ docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 ```
+
+### Create Database
+
+`$ psql CREATE DATABASE NameDB;`
 
 ### Migrations
 
