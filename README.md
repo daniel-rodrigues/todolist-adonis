@@ -7,30 +7,36 @@ Simple ToDo list
 ## Setup
 
 Install Adonis
-`npm i -g @adonisjs/cli`
+
+```bash
+$ npm i -g @adonisjs/cli
+```
 
 Use the adonis command to install the blueprint
 
 ```bash
-adonis new yardstick
+$ adonis new yardstick
 ```
 
 or manually clone the repo and then run `npm install`.
 
 
 ### Server UP
+
 ```bash
 $ docker run --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 ```
 
 ### Create Database
 
-`$ psql CREATE DATABASE NameDB;`
+```bash
+$ psql CREATE DATABASE NameDB;
+```
 
 ### Migrations
 
 Run the following command to run startup migrations.
 
-```js
-adonis migration:run
+```bash
+$ adonis migration:run
 ```
