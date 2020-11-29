@@ -40,3 +40,9 @@ Run the following command to run startup migrations.
 ```bash
 $ adonis migration:run
 ```
+### Run
+
+```bash
+$ adonis serve --dev
+```
+
