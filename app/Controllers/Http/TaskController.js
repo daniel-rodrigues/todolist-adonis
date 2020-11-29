@@ -1,106 +1,137 @@
 'use strict'
 
 const Task = use('App/Models/Task')
-const {validateAll} = use('Validator')
+const {
+  validateAll
+} = use('Validator')
 
 class TaskController {
 
-    async index({view}){
+  async index({
+    view
+  }) {
 
-        const tasks = await Task.all()
+    const tasks = await Task.all()
 
-        return view.render('tasks.list',{
-            tasks: tasks.toJSON()
-        })
+    return view.render('tasks.list', {
+      tasks: tasks.toJSON()
+    })
+  }
+
+  create({
+    view
+  }) {
+    return view.render('tasks.create')
+  }
+
+  async store({
+    request,
+    response,
+    session
+  }) {
+    const messages = {
+      'title.required': 'required',
+      'title.min': 'min 5',
+      'title.max': 'max 140',
+      'body.required': 'required',
+      'body.min': 'min 10',
     }
 
-    create({view}){
-      return view.render('tasks.create')
+    const data = request.only(['title', 'body'])
+
+    const validation = await validateAll(data, {
+      title: 'required|min:5|max:140',
+      body: 'required|min:10',
+    }, messages)
+
+    if (validation.fails()) {
+      session.withErrors(validation.messages()).flashAll()
+      return response.redirect('back')
     }
 
-    async store({request, response, session}){
-      const messages = {
-        'title.required':'required',
-        'title.min': 'min 5',
-        'title.max': 'max 140',
-        'body.required': 'required',
-        'body.min': 'min 10',
-      }
+    await Task.create(data)
 
-      const data = request.only(['title', 'body'])
+    session.flash({
+      notification: 'Task saved!'
+    })
 
-      const validation = await validateAll(data,{
-        title: 'required|min:5|max:140',
-        body: 'required|min:10',
-      }, messages)
+    return response.redirect('/task/list')Your index contains uncommitted changes.
+  }
 
-      if(validation.fails()){
-        session.withErrors(validation.messages()).flashAll()
-        return response.redirect('back')
-      }
-
-      await Task.create(data)
-
-      session.flash({notification: 'Task saved!'})
-
-      return response.redirect('/list')
+  async update({
+    params,
+    request,
+    response,
+    session
+  }) {
+    const messages = {
+      'title.required': 'required',
+      'title.min': 'min 5',
+      'title.max': 'max 140',
+      'body.required': 'required',
+      'body.min': 'min 10',
     }
 
-    async update({params, request, response, session}){
-      const messages = {
-        'title.required':'required',
-        'title.min': 'min 5',
-        'title.max': 'max 140',
-        'body.required': 'required',
-        'body.min': 'min 10',
-      }
+    const data = request.only(['title', 'body'])
 
-      const data = request.only(['title','body'])
+    const validation = await validateAll(data, {
+      title: 'required|min:5|max:140',
+      body: 'required|min:10',
+    }, messages)
 
-      const validation = await validateAll(data,{
-        title: 'required|min:5|max:140',
-        body: 'required|min:10',
-      }, messages)
-
-      if(validation.fails()){
-        session.withErrors(validation.messages()).flashAll()
-        return response.redirect('back')
-      }
-
-      const task = await Task.findOrFail(params.id)
-
-      task.merge(data)
-
-      await task.save()
-
-      session.flash({notification: 'Task updated!'})
-
-      return response.redirect('/task/list')
+    if (validation.fails()) {
+      session.withErrors(validation.messages()).flashAll()
+      return response.redirect('back')
     }
 
-    async details({params, view}){
-      const task = await Task.findOrFail(params.id)
+    const task = await Task.findOrFail(params.id)
 
-      return view.render('tasks.details',{
-        task: task
-      })
-    }
+    task.merge(data)
 
-    async remove({params, response, session}){
-      const task = await Task.find(params.id)
-      await task.delete()
-      session.flash({ notification: 'Task removed!' })
+    await task.save()
 
-      return response.redirect('/task/list')
-    }
+    session.flash({
+      notification: 'Task updated!'
+    })
 
-    async edit({params, view}){
-      const task = await Task.findOrFail(params.id)
+    return response.redirect('/task/list')
+  }
 
-      return view.render('tasks.edit',{
-        task: task
-      })
-    }
+  async details({
+    params,
+    view
+  }) {
+    const task = await Task.findOrFail(params.id)
+
+    return view.render('tasks.details', {
+      task: task
+    })
+  }
+
+  async remove({
+    params,
+    response,
+    session
+  }) {
+    const task = await Task.find(params.id)
+    await task.delete()
+    session.flash({
+      notification: 'Task removed!'
+    })
+
+    return response.redirect('/task/list')
+  }
+
+  async edit({
+    params,
+    view
+  }) {
+    const task = await Task.findOrFail(params.id)
+
+    return view.render('tasks.edit', {
+      task: task
+    })
+  }
 }
 
 module.exports = TaskController

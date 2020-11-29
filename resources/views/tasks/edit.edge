@@ -1,7 +1,7 @@
 @layout('layout/app')
 @section('content')
 <h1 class="mb-3">Edit task</h1>
-<form action="/edit/{{task.id}}?_method=PUT" method="POST">
+<form action="/task/{{task.id}}/edit/?_method=PUT" method="POST">
   {{ csrfField() }}
   <div>
     <div>
