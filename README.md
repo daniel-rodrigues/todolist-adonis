@@ -6,6 +6,9 @@ Simple ToDo list
 
 ## Setup
 
+Install Adonis
+`npm i -g @adonisjs/cli`
+
 Use the adonis command to install the blueprint
 
 ```bash
